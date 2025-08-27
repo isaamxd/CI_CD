@@ -1,13 +1,207 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <title>Projeto CI/CD</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Café Aurora — Sua cafeteria de bairro</title>
+  <meta name="description" content="Página simples de uma cafeteria para projeto da faculdade." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#faf7f2;
+      --card:#ffffff;
+      --ink:#1f2937;
+      --muted:#6b7280;
+      --brand:#7c3aed; /* roxo suave */
+      --accent:#fbbf24; /* amarelo */
+      --radius:16px;
+      --shadow:0 10px 20px rgba(0,0,0,.06);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,Helvetica,sans-serif;
+      color:var(--ink); background:var(--bg);
+    }
+    a{color:inherit; text-decoration:none}
+    img{max-width:100%; display:block}
+
+    /* Layout básico */
+    header{
+      position:sticky; top:0; z-index:50; background:rgba(250,247,242,.8);
+      backdrop-filter:saturate(180%) blur(10px);
+      border-bottom:1px solid #eee;
+    }
+    .wrap{max-width:1100px; margin:0 auto; padding:0 16px}
+    .bar{display:flex; align-items:center; justify-content:space-between; height:64px}
+    .logo{display:flex; align-items:center; gap:10px; font-weight:700}
+    .logo-dot{width:10px; height:10px; border-radius:999px; background:var(--accent); box-shadow:0 0 0 6px rgba(251,191,36,.2)}
+    nav ul{display:flex; gap:18px; list-style:none; margin:0; padding:0}
+    nav a{padding:8px 10px; border-radius:10px}
+    nav a:hover{background:#eee}
+
+    /* Hero */
+    .hero{
+      display:grid; grid-template-columns:1.2fr .8fr; gap:28px;
+      padding:56px 0 28px;
+    }
+    .hero h1{font-size:clamp(28px,4vw,44px); line-height:1.1; margin:0 0 10px}
+    .hero p{color:var(--muted); margin:0 0 20px}
+    .cta{display:inline-flex; align-items:center; gap:10px; background:var(--brand); color:#fff; border:none; padding:14px 18px; border-radius:14px; box-shadow:var(--shadow); cursor:pointer}
+    .cta span.badge{background:rgba(255,255,255,.18); padding:4px 10px; border-radius:999px; font-size:12px}
+    .hero-card{background:linear-gradient(135deg,#fff, #f8f5ff); border:1px solid #eee; border-radius:var(--radius); padding:16px; box-shadow:var(--shadow)}
+
+    /* Seções */
+    section{padding:40px 0}
+    h2{font-size:clamp(22px,3vw,32px); margin:0 0 12px}
+    .muted{color:var(--muted)}
+
+    /* Cardápio */
+    .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
+    .item{background:var(--card); border:1px solid #eee; border-radius:var(--radius); padding:14px; box-shadow:var(--shadow)}
+    .item h3{margin:0 0 6px; font-size:18px}
+    .price{margin-left:auto; font-weight:700}
+    .row{display:flex; align-items:center; gap:10px}
+    .chip{font-size:12px; padding:4px 8px; border-radius:999px; background:#f3f4f6; color:#4b5563}
+
+    /* Sobre & Contato */
+    .two{display:grid; grid-template-columns:1fr 1fr; gap:20px}
+    .card{background:var(--card); border:1px solid #eee; border-radius:var(--radius); padding:18px; box-shadow:var(--shadow)}
+    .hours{display:grid; grid-template-columns:1fr auto; row-gap:8px; color:#374151}
+
+    /* Rodapé */
+    footer{padding:28px 0 60px; color:var(--muted)}
+
+    /* Responsivo */
+    @media (max-width: 900px){
+      .hero{grid-template-columns:1fr; padding-top:28px}
+      .grid{grid-template-columns:1fr 1fr}
+      .two{grid-template-columns:1fr}
+    }
+    @media (max-width: 580px){
+      nav ul{display:none}
+      .grid{grid-template-columns:1fr}
+      .bar .menu-btn{display:inline-flex}
+    }
+    .menu-btn{display:none; border:1px solid #e5e7eb; background:#fff; padding:8px 10px; border-radius:10px}
+  </style>
 </head>
 <body>
-    <h1>Bem-vindo ao Projeto CI/CD</h1>
-    <p><strong>Equipe:</strong> Seu Nome, Nome do colega...</p>
-    <p><strong>Descrição:</strong> Este site faz parte da atividade de Integração Contínua e Entrega Contínua.</p>
-    <p><strong>Data/Hora:</strong> 27/08/2025 - 11:45</p>
+  <header>
+    <div class="wrap bar">
+      <div class="logo">
+        <div class="logo-dot" aria-hidden="true"></div>
+        <a href="#top" aria-label="Página inicial"><span>Café Aurora</span></a>
+      </div>
+      <button class="menu-btn" aria-label="Abrir menu" onclick="toggleMenu()">Menu</button>
+      <nav>
+        <ul id="menu">
+          <li><a href="#cardapio">Cardápio</a></li>
+          <li><a href="#sobre">Sobre</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero" id="top">
+      <div>
+        <h1>O café que ilumina seu dia ☕✨</h1>
+        <p>Grãos especiais, métodos filtrados e quitutes fresquinhos. Venha conhecer o Café Aurora — sua cafeteria de bairro com alma artesanal.</p>
+        <button class="cta" onclick="document.getElementById('cardapio').scrollIntoView({behavior:'smooth'})">
+          Ver cardápio <span class="badge">atualizado hoje</span>
+        </button>
+      </div>
+      <div class="hero-card" aria-hidden="true">
+        <img src="https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?q=80&w=1200&auto=format&fit=crop" alt="Xícara de café e grãos" style="border-radius:12px">
+      </div>
+    </section>
+
+    <section id="cardapio">
+      <h2>Cardápio</h2>
+      <p class="muted">Bebidas quentes e geladas, além de doces da casa. Preços em R$.</p>
+      <div class="grid" role="list">
+        <article class="item" role="listitem">
+          <div class="row"><h3>Espresso</h3><span class="price">6,00</span></div>
+          <div class="row"><span class="chip">clássico</span><span class="chip">30ml</span></div>
+        </article>
+        <article class="item" role="listitem">
+          <div class="row"><h3>Cappuccino</h3><span class="price">12,00</span></div>
+          <div class="row"><span class="chip">leite vaporizado</span><span class="chip">200ml</span></div>
+        </article>
+        <article class="item" role="listitem">
+          <div class="row"><h3>Latte</h3><span class="price">13,00</span></div>
+          <div class="row"><span class="chip">cremoso</span><span class="chip">300ml</span></div>
+        </article>
+        <article class="item" role="listitem">
+          <div class="row"><h3>Mocha</h3><span class="price">14,00</span></div>
+          <div class="row"><span class="chip">chocolate</span><span class="chip">300ml</span></div>
+        </article>
+        <article class="item" role="listitem">
+          <div class="row"><h3>Cold Brew</h3><span class="price">15,00</span></div>
+          <div class="row"><span class="chip">24h extração</span><span class="chip">gelado</span></div>
+        </article>
+        <article class="item" role="listitem">
+          <div class="row"><h3>Cheesecake da casa</h3><span class="price">16,00</span></div>
+          <div class="row"><span class="chip">frutas vermelhas</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="sobre" class="two">
+      <div class="card">
+        <h2>Sobre nós</h2>
+        <p>Somos apaixonados por café de qualidade e atendimento acolhedor. Selecionamos microlotes de produtores brasileiros e oferecemos métodos como V60, prensa francesa e Aeropress.</p>
+      </div>
+      <div class="card">
+        <h2>Horário</h2>
+        <div class="hours" aria-live="polite">
+          <span>Seg–Sex</span><span>08:00–19:00</span>
+          <span>Sábado</span><span>09:00–18:00</span>
+          <span>Domingo</span><span>10:00–16:00</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="contato" class="two">
+      <div class="card">
+        <h2>Contato</h2>
+        <form onsubmit="event.preventDefault(); alert('Mensagem enviada! (demonstração)'); this.reset();">
+          <label for="nome">Nome</label>
+          <input id="nome" name="nome" required style="width:100%; padding:10px; margin:6px 0 12px; border:1px solid #e5e7eb; border-radius:10px" />
+          <label for="email">E‑mail</label>
+          <input id="email" name="email" type="email" required style="width:100%; padding:10px; margin:6px 0 12px; border:1px solid #e5e7eb; border-radius:10px" />
+          <label for="msg">Mensagem</label>
+          <textarea id="msg" name="mensagem" rows="4" style="width:100%; padding:10px; margin:6px 0 12px; border:1px solid #e5e7eb; border-radius:10px"></textarea>
+          <button class="cta" type="submit">Enviar mensagem</button>
+        </form>
+      </div>
+      <div class="card">
+        <h2>Endereço</h2>
+        <p>Rua das Flores, 123 — Centro<br>São Paulo, SP</p>
+        <p class="muted">*Endereço fictício para fins acadêmicos.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <small>© <span id="y"></span> Café Aurora. Projeto acadêmico.</small>
+    </div>
+  </footer>
+
+  <script>
+    // Ano automático
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Menu mobile simples
+    function toggleMenu(){
+      var m = document.getElementById('menu');
+      if(getComputedStyle(m).display === 'none') m.style.display='flex'; else m.style.display='none';
+    }
+  </script>
 </body>
 </html>
